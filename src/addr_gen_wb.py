@@ -194,23 +194,23 @@ end agwb_pkg;
 
 """
         )        
-    with open(wb.GLB.VHDL_PATH + "/" + TOP_NAME + "_const_pkg.vhd", "w") as fo:
+    with open(wb.GLB.VHDL_PATH + "/agwb_" + TOP_NAME + "_const_pkg.vhd", "w") as fo:
         fo.write(
             """library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-library work;
+library agwb;
 """
         )
-        fo.write("package " + TOP_NAME + "_const_pkg is\n")
+        fo.write("package agwb_" + TOP_NAME + "_const_pkg is\n")
         fo.write(
-                "constant C_" + TOP_NAME + "_system_ver"
+                "constant C_agwb_" + TOP_NAME + "_system_ver"
                 + " : std_logic_vector(31 downto 0) := "
                 + 'x"' + format(wb.GLB.VER_ID, "08x") + '";\n'
             )
         for cnst in ex.defines:
             fo.write(
-                "constant C_"
+                "constant "
                 + cnst
                 + " : integer := "
                 + str(ex.defines[cnst])
@@ -370,7 +370,7 @@ if ARGS.fusesoc:
 
         created_files = wb.created_files["vhdl"]
         created_files.insert(0,wb.GLB.VHDL_PATH + "/agwb_pkg.vhd")
-        created_files.append(wb.GLB.VHDL_PATH + "/" + TOP_NAME + "_const_pkg.vhd")
+        created_files.append(wb.GLB.VHDL_PATH + "/agwb_" + TOP_NAME + "_const_pkg.vhd")
         coredata["filesets"] = {
             "rtl": {
                 "files": created_files,
@@ -390,7 +390,7 @@ if ARGS.eprj:
         for file in wb.created_files["vhdl"]:
             file = file.split("/")[-1]
             created_files.append(file)
-        created_files.append(TOP_NAME + "_const_pkg.vhd")
+        created_files.append("agwb_" + TOP_NAME + "_const_pkg.vhd")
         for file in created_files:
             fo.write("vhdl agwb " + file + "\n")
 

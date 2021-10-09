@@ -52,7 +52,8 @@ library general_cores;
 use general_cores.wishbone_pkg.all;
 
 library work;
-use work.agwb_pkg.all;
+library agwb;
+use agwb.agwb_pkg.all;
 
 package {p_entity}_pkg is
 
@@ -87,8 +88,9 @@ use ieee.numeric_std.all;
 library general_cores;
 use general_cores.wishbone_pkg.all;
 library work;
-use work.agwb_pkg.all;
-use work.{p_entity}_pkg.all;
+library agwb;
+use agwb.agwb_pkg.all;
+use agwb.{p_entity}_pkg.all;
 
 entity {p_entity} is
   generic (
@@ -1753,7 +1755,7 @@ end if;
         self.add_templ("p_masks", masks, 0)
         self.add_templ("nof_subblks", str(n_ports), 0)
         self.add_templ("nof_masters", str(self.N_MASTERS), 0)
-        self.add_templ("p_entity", self.name, 0)
+        self.add_templ("p_entity", "agwb_" + self.name + "_wb", 0)
         # If block has aggregated outputs, close the record definition
         # and add the output record to the entity ports
         if self.out_type is not None:
@@ -1776,11 +1778,11 @@ end if;
             # We need to clear the start of the record from the template
             self.set_templ("ack_record","")
         # All template is filled, so we can now generate the files
-        wb_vhdl_pkg_file = GLB.VHDL_PATH + "/" + self.name + "_pkg.vhd"
+        wb_vhdl_pkg_file = GLB.VHDL_PATH + "/agwb_" + self.name + "_pkg.vhd"
         with open(wb_vhdl_pkg_file, "w") as f_o:
             f_o.write(TEMPL_PKG.format(**self.templ_dict))
             created_files["vhdl"].append(wb_vhdl_pkg_file)
-        wb_vhdl_file = GLB.VHDL_PATH + "/" + self.name + ".vhd"
+        wb_vhdl_file = GLB.VHDL_PATH + "/agwb_" + self.name + ".vhd"
         with open(wb_vhdl_file, "w") as f_o:
             f_o.write(templ_wb(self.N_MASTERS).format(**self.templ_dict))
             created_files["vhdl"].append(wb_vhdl_file)
