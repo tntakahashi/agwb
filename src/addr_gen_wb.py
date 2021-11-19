@@ -243,7 +243,7 @@ if wb.GLB.PYTHON_PATH:
     src_path = os.path.join(os.path.dirname(__file__), wb.GLB.PYTHON_SRC_PATH)
     shutil.copy(src_path + "__init__.py", dst_path)
     shutil.copy(src_path + "agwb.py", dst_path)
-    with open(wb.GLB.PYTHON_PATH + "/agwb/" + TOP_NAME + "_const.py", "w") as fo:
+    with open(wb.GLB.PYTHON_PATH + "/agwb/agwb_" + TOP_NAME + "_const.py", "w") as fo:
         for cnst in ex.defines:
             fo.write(
                 cnst + " = " + str(ex.defines[cnst]) + " # " + ex.comments[cnst] + "\n"
@@ -306,7 +306,7 @@ by the agwb (https://github.com/wzab/agwb).
 Do not modify it by hand.
 \"\"\"\n
 """
-        res += "from . import agwb\n\n"
+        res += "from agwb import *\n\n"
         for key, BL in wb.blackboxes().items():
             res += BL.gen_python(nvar)
         for key, BL in wb.blocks().items():
@@ -315,7 +315,7 @@ Do not modify it by hand.
         topname = TOP_NAME
         if nvar is not None:
             topname += "_v" + str(nvar)
-        with open(wb.GLB.PYTHON_PATH + "/agwb/" + topname + ".py", "w") as fo:
+        with open(wb.GLB.PYTHON_PATH + "/agwb/agwb_" + topname + ".py", "w") as fo:
             fo.write(res)
         with open(wb.GLB.PYTHON_PATH + "/agwb/" + "__init__.py", "a") as f:
             f.write(
