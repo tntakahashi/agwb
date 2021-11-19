@@ -1203,9 +1203,9 @@ class WbReg(WbObject):
                 # Single register
                 res += sp8 + "'" + self.name + "':(" + hex(reg_base + self.base) + ",("
             if self.regtype == "sreg":
-                res += "agwb.StatusRegister,"
+                res += "StatusRegister,"
             elif self.regtype == "creg":
-                res += "agwb.ControlRegister,"
+                res += "ControlRegister,"
             else:
                 raise Exception("Incorrect type of register:" + self.regtype)
             if not self.fields:
@@ -1219,7 +1219,7 @@ class WbReg(WbObject):
                         sp12
                         + "'"
                         + f_l.name
-                        + "':agwb.BitField("
+                        + "':BitField("
                         + str(f_l.msb)
                         + ","
                         + str(f_l.lsb)
@@ -1346,7 +1346,7 @@ class WbBlackBox(WbObject):
             + hex(0)
             + ","
             + str(self.addr_size)
-            + ",(agwb.ControlRegister,))\n"
+            + ",(ControlRegister,))\n"
         )
         res += sp4 + "}\n\n"
         return res
@@ -2230,16 +2230,16 @@ end if;
                 # Registers area
                 # Add two standard register - ID and VER
                 adr = a_r.adr
-                res += sp8 + "'ID':(" + hex(adr + spec_regs["id"]) + ",(agwb.StatusRegister,)),\\\n"
-                res += sp8 + "'VER':(" + hex(adr + spec_regs["ver"]) + ",(agwb.StatusRegister,)),\\\n"
+                res += sp8 + "'ID':(" + hex(adr + spec_regs["id"]) + ",(StatusRegister,)),\\\n"
+                res += sp8 + "'VER':(" + hex(adr + spec_regs["ver"]) + ",(StatusRegister,)),\\\n"
                 if self.testdev_ena != 0:
                     # Conditionally add test registers. 
                     # They are added as control registers to enable testing of
                     # read and write addresses.
-                    res += sp8 + "'TEST_RW':(" + hex(adr + spec_regs["test_rw"]) + ",(agwb.ControlRegister,)),\\\n"
-                    res += sp8 + "'TEST_WO':(" + hex(adr + spec_regs["test_wo"]) + ",(agwb.ControlRegister,)),\\\n"
-                    res += sp8 + "'TEST_RO':(" + hex(adr + spec_regs["test_ro"]) + ",(agwb.ControlRegister,)),\\\n"
-                    res += sp8 + "'TEST_TOUT':(" + hex(adr + spec_regs["test_tout"]) + ",(agwb.ControlRegister,)),\\\n"                    
+                    res += sp8 + "'TEST_RW':(" + hex(adr + spec_regs["test_rw"]) + ",(ControlRegister,)),\\\n"
+                    res += sp8 + "'TEST_WO':(" + hex(adr + spec_regs["test_wo"]) + ",(ControlRegister,)),\\\n"
+                    res += sp8 + "'TEST_RO':(" + hex(adr + spec_regs["test_ro"]) + ",(ControlRegister,)),\\\n"
+                    res += sp8 + "'TEST_TOUT':(" + hex(adr + spec_regs["test_tout"]) + ",(ControlRegister,)),\\\n"                    
                 for reg in self.regs:
                     res += reg.gen_python(adr,nvar)
             else:
